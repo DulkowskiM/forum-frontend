@@ -8,15 +8,17 @@ import Layout from './components/Layout/Layout';
 import Menu from './components/Layout/Menu/Menu';
 import Footer from './components/Layout/Footer/Footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Message from './pages/message/Message';
 function App() {
   const menu = <Menu />;
 
   const content = (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path='/admin' element={<Admin />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/message" element={<Message />} />
     </Routes>
   );
   const footer = <Footer />;

@@ -64,6 +64,18 @@ export default function Home() {
               time: '20:38',
             },
           },
+          {
+            title: 'Przejście władców mrozu',
+            summary: 'Quest wymaga osiagnięcia 300 poziomu doświadczenia...',
+            topicsCount: 20,
+            postCount: 60,
+            lastPost: {
+              postName: 'Post name',
+              authorName: 'Author Name',
+              date: '24/11/2022',
+              time: '20:38',
+            },
+          },
         ],
       },
     ]);

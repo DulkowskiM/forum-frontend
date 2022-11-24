@@ -1,21 +1,33 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import styles from './Menu.module.css';
+import MenuLink from './MenuLink/MenuLink';
+import { homeIcon, contractorsIcon, settingsIcon } from './Icons';
+
 export default function Menu() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <a className="navbar-brand" href="#">Navbar</a>
-  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span className="navbar-toggler-icon"></span>
-  </button>
-  <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div className="navbar-nav">
-      <a className= "nav-item nav-link active"  href="/">Główna <span class="sr-only">(current)</span></a>
-      <a className="nav-item nav-link" href="/src/pages/login/Login.js">Logowanie</a>
-      <a className="nav-item nav-link" href="/src/pages/register/Register.js">Rejestracja</a>
-      <a className="nav-item nav-link disabled" href="/src/pages/admin/Admin.js">Admin</a>
+    <div
+      className={`d-none d-md-flex row ps-3 pe-3 ${styles.main} align-items-center`}
+    >
+      <div className='col-4 col-lg-2'>Navbar</div>
+      <div className='col-4 col-lg-3'>
+        <MenuLink color='#9747FF' label='Strona główna' to='/'>
+          {homeIcon}
+        </MenuLink>
+      </div>
+      <div className='col-4 col-lg-2'>
+        <MenuLink color='#4ECB71' label='Logowanie' to='/login'>
+          {contractorsIcon}
+        </MenuLink>
+      </div>
+      <div className='col-4 col-lg-2'>
+        <MenuLink color='#4ECB71' label='Rejestracja' to='/register'>
+          {contractorsIcon}
+        </MenuLink>
+      </div>
+      <div className='d-none d-lg-block col-3 col-lg-2'>
+        <MenuLink color='#EE9C22' label='Admin' to='/admin'>
+          {settingsIcon}
+        </MenuLink>
+      </div>
     </div>
-  </div>
-</nav>
-  )
+  );
 }
-   

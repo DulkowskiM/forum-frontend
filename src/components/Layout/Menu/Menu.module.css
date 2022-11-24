@@ -1,3 +1,22 @@
-.redlink{
-    color:red;
+.main {
+  background-color: #f6f6f6;
+}
+
+@media only screen and (max-width: 768px) {
+  .main {
+    height: 15vh;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .main {
+    height: 12vh;
+  }
+}
+
+@media only screen and (min-width: 1441px) {
+  .main {
+    background-color: #f6f6f6;
+    height: 7vh;
+  }
 }

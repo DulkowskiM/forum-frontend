@@ -9,23 +9,20 @@ import Menu from './components/Layout/Menu/Menu';
 import Footer from './components/Layout/Footer/Footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
+  const menu = <Menu />;
 
-const menu = <Menu/>
-
-const content = (
-
-  <Routes>
-     <Route path="/" element={<Home />} />
-     <Route path="/login" element={<Login />} />
-     <Route path="/register" element={<Register />} />
-     <Route path="/admin" element={<Admin />} />
-  </Routes>
-
-)
-const footer = <Footer/>
+  const content = (
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
+      <Route path='/admin' element={<Admin />} />
+    </Routes>
+  );
+  const footer = <Footer />;
   return (
     <Router>
-       <Layout menu={menu} content={content()} footer={footer}/>
+      <Layout menu={menu} content={content} footer={footer} />
     </Router>
   );
 }

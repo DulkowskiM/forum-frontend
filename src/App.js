@@ -9,7 +9,7 @@ import Menu from './components/Layout/Menu/Menu';
 import Footer from './components/Layout/Footer/Footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Message from './pages/message/Message';
-import AddPost from './pages/addPost/addPost';
+import AddPost from './pages/AddPost/AddPost';
 function App() {
   const menu = <Menu />;
 

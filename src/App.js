@@ -9,6 +9,7 @@ import Menu from './components/Layout/Menu/Menu';
 import Footer from './components/Layout/Footer/Footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Message from './pages/message/Message';
+import AddPost from './pages/addPost/addPost';
 function App() {
   const menu = <Menu />;
 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/message" element={<Message />} />
+      <Route path="/addPost" element={<AddPost />} />
     </Routes>
   );
   const footer = <Footer />;

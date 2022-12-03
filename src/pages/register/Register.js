@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import InputEmail from '../../components/UI/form/InputEmail';
-import InputPassword from '../../components/UI/form/InputPassword';
+import RegisterForm from '../../components/auth/RegisterForm/RegisterForm';
 //import LoadingButton from
 export default function Register(props) {
   const [loading, setLoading] = useState(false);
@@ -18,6 +17,12 @@ export default function Register(props) {
       rules: ['requierd', { rule: 'email' }],
     },
     password: {
+      value: '',
+      error: '',
+      showError: false,
+      rules: ['requierd', { rule: 'password' }],
+    },
+    confirmPassword: {
       value: '',
       error: '',
       showError: false,
@@ -48,37 +53,18 @@ export default function Register(props) {
   };
 
   return (
-    <div className="card">
+    <div className="card mb-5">
       <div className="card-header">Rejestracja</div>
       <div className="card-body">
-        <p className="text">Uzupełnij dane</p>
-
-        <form onSubmit={submit}>
-          <InputEmail
-            label="mail"
-            placeHolder="mail@example.com"
-            value={form.email.value}
-            onChange={(value) => changeHandler(value, 'email')}
-            error={form.email.error}
-            showError={form.email.showError}
-          />
-
-          <InputPassword
-            label="Hasło"
-            value={form.password.value}
-            onChange={(value) => changeHandler(value, 'password')}
-            error={form.password.error}
-            showError={form.password.showError}
-          />
-          <InputPassword
-            label="Wpisz ponownie hasło"
-            value={form.password.value}
-            onChange={(value) => changeHandler(value, 'password')}
-            error={form.password.error}
-            showError={form.password.showError}
-          />
-          <button className="btn btn-success">Zarejestruj</button>
-        </form>
+        <RegisterForm
+          nick={form.nick}
+          email={form.email}
+          password={form.password}
+          confirmPassword={form.confirmPassword}
+          onChange={changeHandler}
+          onSubmit={submit}
+          loading={loading}
+        />
       </div>
     </div>
   );

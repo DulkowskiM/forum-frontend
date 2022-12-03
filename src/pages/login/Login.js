@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import InputEmail from '../../components/UI/form/InputEmail';
-import InputPassword from '../../components/UI/form/InputPassword';
+import LoginForm from '../../components/auth/LoginForm/LoginForm';
+import './Login.css';
 export default function Login(props) {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -47,31 +47,16 @@ export default function Login(props) {
   };
 
   return (
-    <div className="card">
-      <div className="card-header">Rejestracja</div>
-      <div className="card-body">
-        <p className="text">Uzupełnij dane</p>
-
-        <form onSubmit={submit}>
-          <InputEmail
-            label="mail"
-            placeHolder="mail@example.com"
-            value={form.email.value}
-            onChange={(value) => changeHandler(value, 'email')}
-            error={form.email.error}
-            showError={form.email.showError}
-          />
-
-          <InputPassword
-            label="Hasło"
-            value={form.password.value}
-            onChange={(value) => changeHandler(value, 'password')}
-            error={form.password.error}
-            showError={form.password.showError}
-          />
-
-          <button className="btn btn-success">Zarejestruj</button>
-        </form>
+    <div className="card row">
+      <div className="card-header">Logowanie</div>
+      <div className="card-body col=6">
+        <LoginForm
+          email={form.email}
+          password={form.password}
+          onChange={changeHandler}
+          onSubmit={submit}
+          loading={loading}
+        />
       </div>
     </div>
   );

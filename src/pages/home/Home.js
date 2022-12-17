@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+} from 'react-router-dom';
 import Departments from '../../components/Departments/Departments';
 
 export default function Home() {
   const [departments, setDepartments] = useState([]);
+  // if (true) {
+  //   const navigate = useNavigate();
+  //   navigate('/');
+  // }
 
   useEffect(() => {
     setDepartments([

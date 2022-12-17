@@ -1,10 +1,11 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import RegisterForm from '../../components/auth/RegisterForm/RegisterForm';
 //import LoadingButton from
 export default function Register(props) {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    nick: {
+    name: {
       value: '',
       error: '',
       showError: false,
@@ -29,13 +30,16 @@ export default function Register(props) {
       rules: ['requierd', { rule: 'password' }],
     },
   });
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const data = {
+      name: form.name.value,
+      email: form.email.value,
+      password: form.password.value,
+    };
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    await axios.post('http://localhost:8000/api/register', data);
   };
 
   const changeHandler = (value, fieldName) => {
@@ -57,12 +61,12 @@ export default function Register(props) {
       <div className="card-header">Rejestracja</div>
       <div className="card-body">
         <RegisterForm
-          nick={form.nick}
+          name={form.name}
           email={form.email}
           password={form.password}
           confirmPassword={form.confirmPassword}
           onChange={changeHandler}
-          onSubmit={submit}
+          onSubmit={(e) => submit(e)}
           loading={loading}
         />
       </div>

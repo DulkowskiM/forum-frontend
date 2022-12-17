@@ -3,6 +3,7 @@ import Input from '../../UI/form/Input';
 export default function LoginForm(props) {
   return (
     <form className="row" onSubmit={props.onSubmit}>
+      <div className="card-image"> </div>
       <div className="col-12 col-xl-3">
         <Input
           label="Adres email"
@@ -22,14 +23,9 @@ export default function LoginForm(props) {
           showError={props.password.showError}
         />
 
-        <button className="btn btn-success mt-3">Zarejestruj</button>
+        <button className="btn btn-primary mt-3">Zarejestruj</button>
       </div>
-      <div className="col-9">
-        <img
-          className="img-fluid"
-          src="https://totemat.pl/wp-content/uploads/Pozycjonowanie-forum.jpg"
-        ></img>
-      </div>
+      <div className="col-9"></div>
     </form>
   );
 }

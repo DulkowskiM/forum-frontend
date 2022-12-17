@@ -16,6 +16,7 @@ const AddPost = () => {
       rules: ['requierd', { rule: 'email' }],
     },
   });
+  <div className="card-header">Logowanie</div>;
   return (
     <div>
       <AddPostForm descPost={form.descPost} postName={form.postName} />

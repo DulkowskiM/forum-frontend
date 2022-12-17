@@ -7,10 +7,10 @@ export default function RegisterForm(props) {
         <Input
           label="Nazwa użytkownika"
           type="text"
-          value={props.nick.value}
-          onChange={(value) => props.onChange(value, 'nick')}
-          error={props.nick.error}
-          showError={props.nick.showError}
+          value={props.name.value}
+          onChange={(value) => props.onChange(value, 'name')}
+          error={props.name.error}
+          showError={props.name.showError}
           s
         />
         <Input
@@ -39,7 +39,7 @@ export default function RegisterForm(props) {
           showError={props.confirmPassword.showError}
         />
 
-        <button className="btn btn-success mt-3">Zarejestruj</button>
+        <button className="btn btn-primary mt-3">Zarejestruj</button>
       </div>
     </form>
   );

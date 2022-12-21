@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import LoginForm from '../../components/auth/LoginForm/LoginForm';
+import LoginForm from '../../../components/Auth/LoginForm/LoginForm';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../../hooks/useAuth';
 export default function Login(props) {
   const [, setAuth] = useAuth();
   const [loading, setLoading] = useState(false);

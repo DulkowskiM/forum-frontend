@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import RegisterForm from '../../components/auth/RegisterForm/RegisterForm';
+import RegisterForm from '../../../components/Auth/RegisterForm/RegisterForm';
 //import LoadingButton from
 export default function Register(props) {
   const [loading, setLoading] = useState(false);

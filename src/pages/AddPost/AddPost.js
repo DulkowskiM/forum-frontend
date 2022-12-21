@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Editor from '../../components/Editor/Editor';
 import AddPostForm from './AddPostForm';
 const AddPost = () => {
-  const [form, setForm] = useState({
+  const [form] = useState({
     postName: {
       value: '',
       error: '',
@@ -16,11 +16,13 @@ const AddPost = () => {
       rules: ['requierd', { rule: 'email' }],
     },
   });
-  <div className="card-header">Logowanie</div>;
   return (
     <div>
-      <AddPostForm descPost={form.descPost} postName={form.postName} />
-      <Editor />
+      <div className="card-header">Logowanie</div>;
+      <div>
+        <AddPostForm descPost={form.descPost} postName={form.postName} />
+        <Editor />
+      </div>
     </div>
   );
 };

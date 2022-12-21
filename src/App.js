@@ -17,6 +17,9 @@ import AddPost from './components/Editor/Editor';
 import { AuthenticatedRoute } from './hoc/AuthenticatedRoute';
 import EditTopic from './components/Topics/Topic/Edit/Edit';
 import TopicList from './components/Topics/Topics';
+import Department from './pages/Departments/Department';
+import SubDepartment from './pages/Departments/SubDepartment/SubDepartment';
+import Topic from './pages/Departments/SubDepartment/Topic/Topic';
 //import AuthenticatedRoute from './hoc/AuthenticatedRoute';
 function App() {
   const menu = <Menu />;
@@ -33,6 +36,15 @@ function App() {
             <Admin />
           </AuthenticatedRoute>
         }
+      />
+      <Route path="/forum/:department" element={<Department />} />
+      <Route
+        path="/forum/:department/:subdepartment"
+        element={<SubDepartment />}
+      />
+      <Route
+        path="/forum/:department/:subdepartment/:topicId"
+        element={<Topic />}
       />
       <Route path="/message" element={<Message />} />
       <Route path="/addPost" element={<AddPost />} />

@@ -1,4 +1,5 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import Home from './pages/home/Home';
 import Admin from './pages/admin/Admin';
 import Login from './pages/login/Login';
@@ -14,7 +15,8 @@ import AuthContext from './contexts/AuthContext';
 import Message from './pages/message/Message';
 import AddPost from './components/Editor/Editor';
 import { AuthenticatedRoute } from './hoc/AuthenticatedRoute';
-
+import EditTopic from './components/admin/edit.component';
+import TopicList from './components/admin/list.component';
 //import AuthenticatedRoute from './hoc/AuthenticatedRoute';
 function App() {
   const menu = <Menu />;
@@ -34,6 +36,9 @@ function App() {
       />
       <Route path="/message" element={<Message />} />
       <Route path="/addPost" element={<AddPost />} />
+      <Route path="/topic/edit/:id" element={<EditTopic />} />
+      <Route exact path="/topics" element={<TopicList />} />
+
       {/* <Route path="/logout" element={<Logout />} /> */}
     </Routes>
   );

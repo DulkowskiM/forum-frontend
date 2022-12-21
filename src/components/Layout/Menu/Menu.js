@@ -5,10 +5,10 @@ import useAuth from '../../../hooks/useAuth';
 import instance from '../../../axios';
 export default function Menu() {
   const [auth, setAuth] = useAuth();
-  const isAuthenticated = auth.isAuthenticated || false;
+  // const isAuthenticated = auth.isAuthenticated || false;
   const logout = async () => {
     try {
-      await instance.get('http://localhost:8000/api/logout');
+      // await instance.get('http://localhost:8000/api/logout');
       setAuth();
     } catch (e) {
       console.log(e);
@@ -46,11 +46,11 @@ export default function Menu() {
         </MenuLink>
       </div>
       <div className=" col-1 col-lg-5">
-        {isAuthenticated ? (
+        {/* {isAuthenticated ? (
           <button onClick={logout} className="btn btn-primary mt-3">
             Wyloguj
           </button>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );

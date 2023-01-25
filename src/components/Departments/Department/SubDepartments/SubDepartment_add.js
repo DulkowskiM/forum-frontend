@@ -1,56 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-export default function EditUser() {
+export default function CreateSubdepartment() {
   const navigate = useNavigate();
 
-  const { id } = useParams();
-
   const [name, setName] = useState('');
-  const [content, setContent] = useState('');
   const [validationError, setValidationError] = useState({});
 
-  useEffect(() => {
-    fetchProduct();
-  }, []);
-
-  const fetchProduct = async () => {
-    await axios
-      .get(`http://localhost:8000/api/topics/${id}`)
-      .then(({ data }) => {
-        const { name, content } = data.topic;
-        setName(name);
-        setContent(content);
-      })
-      .catch((e) => {
-        Swal.fire({
-          text: e.message,
-          icon: 'error',
-        });
-      });
-  };
-
-  const updateProduct = async (e) => {
+  const createSubdepartment = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('_method', 'PATCH');
+
     formData.append('name', name);
-    formData.append('content', content);
+
     await axios
-      .post(`http://localhost:8000/api/topics/${id}`, formData)
+      .post(`http://localhost:8000/api/subdepartments`, formData)
       .then(({ data }) => {
         Swal.fire({
           icon: 'success',
           text: data.message,
         });
-        navigate('/');
+        navigate('/subdepartments');
       })
       .catch(({ response }) => {
         if (response.status === 422) {
@@ -70,7 +47,7 @@ export default function EditUser() {
         <div className="col-12 col-sm-12 col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Update Product</h4>
+              <h4 className="card-title">Stwórz nowy pod dział</h4>
               <hr />
               <div className="form-wrapper">
                 {Object.keys(validationError).length > 0 && (
@@ -88,11 +65,11 @@ export default function EditUser() {
                     </div>
                   </div>
                 )}
-                <Form onSubmit={updateProduct}>
+                <Form onSubmit={createSubdepartment}>
                   <Row>
                     <Col>
                       <Form.Group controlId="Name">
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label>Nazwa</Form.Label>
                         <Form.Control
                           type="text"
                           value={name}
@@ -103,21 +80,7 @@ export default function EditUser() {
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row className="my-3">
-                    <Col>
-                      <Form.Group controlId="Description">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          value={content}
-                          onChange={(event) => {
-                            setContent(event.target.value);
-                          }}
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
+
                   <Button
                     variant="primary"
                     className="mt-2"
@@ -125,7 +88,7 @@ export default function EditUser() {
                     block="block"
                     type="submit"
                   >
-                    Update
+                    Dodaj
                   </Button>
                 </Form>
               </div>

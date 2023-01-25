@@ -23,7 +23,7 @@ export default function LoginForm(props) {
           showError={props.password.showError}
         />
 
-        <button className="btn btn-primary mt-3">Zarejestruj</button>
+        <button className="btn btn-primary mt-3">Zaloguj</button>
       </div>
       <div className="col-9"></div>
     </form>

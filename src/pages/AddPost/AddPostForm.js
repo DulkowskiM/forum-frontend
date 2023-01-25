@@ -12,14 +12,6 @@ const AddPostForm = (props) => {
           error={props.postName.error}
           showError={props.postName.showError}
         />
-        <Input
-          label="Opis postu"
-          type="text"
-          value={props.descPost.value}
-          onChange={(value) => props.onChange(value, 'descPost')}
-          error={props.descPost.error}
-          showError={props.descPost.showError}
-        />
       </div>
     </form>
   );

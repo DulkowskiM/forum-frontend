@@ -13,20 +13,18 @@ export default function EditUser() {
   const { id } = useParams();
 
   const [name, setName] = useState('');
-  const [content, setContent] = useState('');
   const [validationError, setValidationError] = useState({});
 
   useEffect(() => {
-    fetchProduct();
+    fetchDepartments();
   }, []);
 
-  const fetchProduct = async () => {
+  const fetchDepartments = async () => {
     await axios
-      .get(`http://localhost:8000/api/topics/${id}`)
+      .get(`http://localhost:8000/api/departments/${id}`)
       .then(({ data }) => {
-        const { name, content } = data.topic;
+        const { name } = data.department;
         setName(name);
-        setContent(content);
       })
       .catch((e) => {
         Swal.fire({
@@ -35,22 +33,20 @@ export default function EditUser() {
         });
       });
   };
-
-  const updateProduct = async (e) => {
+  const updateDepartment = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append('_method', 'PATCH');
     formData.append('name', name);
-    formData.append('content', content);
     await axios
-      .post(`http://localhost:8000/api/topics/${id}`, formData)
+      .post(`http://localhost:8000/api/departments/${id}`, formData)
       .then(({ data }) => {
         Swal.fire({
           icon: 'success',
           text: data.message,
         });
-        navigate('/');
+        navigate('/departments');
       })
       .catch(({ response }) => {
         if (response.status === 422) {
@@ -70,7 +66,7 @@ export default function EditUser() {
         <div className="col-12 col-sm-12 col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Update Product</h4>
+              <h4 className="card-title">Zmień nazwę działu</h4>
               <hr />
               <div className="form-wrapper">
                 {Object.keys(validationError).length > 0 && (
@@ -88,7 +84,7 @@ export default function EditUser() {
                     </div>
                   </div>
                 )}
-                <Form onSubmit={updateProduct}>
+                <Form onSubmit={updateDepartment}>
                   <Row>
                     <Col>
                       <Form.Group controlId="Name">
@@ -103,21 +99,7 @@ export default function EditUser() {
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row className="my-3">
-                    <Col>
-                      <Form.Group controlId="Description">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          value={content}
-                          onChange={(event) => {
-                            setContent(event.target.value);
-                          }}
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
+
                   <Button
                     variant="primary"
                     className="mt-2"
@@ -125,7 +107,7 @@ export default function EditUser() {
                     block="block"
                     type="submit"
                   >
-                    Update
+                    Aktualizuj
                   </Button>
                 </Form>
               </div>

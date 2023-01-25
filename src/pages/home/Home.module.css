@@ -1,0 +1,27 @@
+.department {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: left;
+  color: #ffffff;
+  cursor: pointer;
+  background-color: #1e90ff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.subdepartments{
+  font-size: 1.2rem;
+  padding: 10;
+  margin: 10;
+  cursor:pointer;
+  background-color: rgb(134, 159, 168);
+
+}
+
+.categories{
+  font-size: 1rem;
+  padding: 10;
+  margin: 10;
+  cursor:pointer;
+  background-color: rgb(255, 255, 255);
+
+}

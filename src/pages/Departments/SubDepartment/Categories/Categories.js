@@ -2,45 +2,49 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styles from '../Main.module.css';
-export default function SubDepartment() {
-  const [categories, setCategories] = useState([]);
-  const [subdepartment, setSubDepartment] = useState([]);
+import { Link } from 'react-router-dom';
+import styles from '../../Main.module.css';
+export default function Department() {
+  const [category, setCategory] = useState([]);
+  const [topics, setTopics] = useState([]);
   const navigate = useNavigate();
-  let { id_dep, id_sub } = useParams();
+  let { id_dep, id_sub, id_cat } = useParams();
   useEffect(() => {
-    const fetchSubDepartment = async () => {
+    const fetchCategories = async () => {
       await axios
-        .get(`http://localhost:8000/api/subdepartments/${id_sub}`)
+        .get(`http://localhost:8000/api/categories/${id_cat}`)
         .then((res) => {
-          setSubDepartment({
-            id_deps: res.data.subdepartment.id_department,
-            id_subd: res.data.subdepartment.id_subdepartment,
-            name: res.data.subdepartment.name,
+          setCategory({
+            id_cat: res.data.category.id_category,
+            id_subd: res.data.category.id_subdepartment,
+            name: res.data.category.name,
           });
         });
     };
-    fetchSubDepartment();
-    const fetchCategories = async () => {
-      await axios.get(`http://localhost:8000/api/categories`).then((res) => {
+    fetchCategories();
+    const fetchTopics = async () => {
+      await axios.get(`http://localhost:8000/api/topics`).then((res) => {
         const data = res.data.map((dep) => ({
           id_category: dep.id_category,
-          id_subdep: dep.id_subdepartment,
+          id_topic: dep.id_topic,
           name: dep.name,
         }));
-        setCategories(data);
+        setTopics(data);
       });
     };
-    fetchCategories();
+    fetchTopics();
   }, []);
-  // console.log(categories);
-  // console.log(subdepartment);
-  console.log(id_sub);
   return (
     <div className={`row ${styles.main} mt-3`}>
       <div className="card p-0">
         <div className={`col-12 ps-4 p-2 ${styles.name}`}>
-          {subdepartment.name}
+          {category.name}
+          <Link
+            className="btn btn-info mb-2 float-end"
+            to={`/forum/${id_dep}/${id_sub}/${id_cat}/newtopic`}
+          >
+            Stwórz nowy temat
+          </Link>
         </div>
         <div className="card-body p-0">
           <table className="table table-striped">
@@ -50,26 +54,26 @@ export default function SubDepartment() {
                   className={`col-4 text-center ${styles.headers}`}
                   style={{ border: 'none' }}
                 >
-                  Dostępne kategorie
+                  Dostępne tematy
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
-                  {categories.length > 0 &&
-                    categories.map((categories) => {
-                      if (categories.id_subdep === subdepartment.id_subd) {
+                  {topics.length > 0 &&
+                    topics.map((topics) => {
+                      if (topics.id_category === category.id_cat) {
                         return (
                           <div className={styles.subdepartments}>
                             <p
                               onClick={() =>
                                 navigate(
-                                  `/forum/${subdepartment.id_deps}/${categories.id_subdep}/${categories.id_category}`,
+                                  `/forum/${id_dep}/${id_sub}/${topics.id_category}/${topics.id_topic}`,
                                 )
                               }
                             >
-                              {categories.name}
+                              {topics.name}
                             </p>
                           </div>
                         );

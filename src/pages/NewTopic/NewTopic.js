@@ -8,14 +8,16 @@ import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
 import Editor from '../../components/Editor/Editor';
 import { useParams } from 'react-router-dom';
-export default function AddPost() {
+
+export default function NewTopic() {
   let { id_dep, id_sub, id_cat } = useParams();
   const [nameTopic, setNameTopic] = useState('');
   const [validationError, setValidationError] = useState({});
   const [editorData, setEditorData] = useState('');
-  const newTopic = async (e) => {
+
+  const createTopic = async (e) => {
     e.preventDefault();
-    // const id_user = localStorage.getItem(id);
+    //dane do wysłania
     const formData = new FormData();
     formData.append('id_category', id_cat);
     formData.append('id_user', 3);
@@ -29,7 +31,7 @@ export default function AddPost() {
           icon: 'success',
           text: data.message,
         });
-        Navigate('/departments');
+        Navigate(`/forum/${id_dep}/${id_sub}/${id_cat}`);
       })
       .catch(({ response }) => {
         if (response.status === 422) {
@@ -43,7 +45,7 @@ export default function AddPost() {
       });
   };
   return (
-    <Form onSubmit={newTopic}>
+    <Form onSubmit={createTopic}>
       <Row>
         <Col>
           <Form.Group controlId="Name">

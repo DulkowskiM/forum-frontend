@@ -1,9 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../../../components/Auth/RegisterForm/RegisterForm';
-//import LoadingButton from
+import './Register.css';
+import useAuth from '../../../hooks/useAuth';
 export default function Register(props) {
   const [loading, setLoading] = useState(false);
+  const [, setAuth] = useAuth();
   const [form, setForm] = useState({
     name: {
       value: '',
@@ -30,6 +33,7 @@ export default function Register(props) {
       rules: ['requierd', { rule: 'password' }],
     },
   });
+  const navigate = useNavigate();
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,13 +42,23 @@ export default function Register(props) {
       email: form.email.value,
       password: form.password.value,
     };
+    const response = await axios.post(
+      'http://localhost:8000/api/register',
+      data,
+    );
+    const authData = {
+      id: response.data.user.id,
+      email: response.data.user.email,
+      token: response.data.authorisation.token,
+      isAuthenticated: true,
+      isAdmin: false,
+    };
+    setAuth(authData);
 
-    await axios.post('http://localhost:8000/api/register', data);
+    navigate('/');
   };
 
   const changeHandler = (value, fieldName) => {
-    // const error = validate(form[fieldName].rules, value);
-
     setForm({
       ...form,
       [fieldName]: {

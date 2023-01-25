@@ -42,14 +42,7 @@ export default function Login(props) {
         'http://localhost:8000/api/login',
         data,
       );
-      const authData = {
-        id: response.data.user.id,
-        email: response.data.user.email,
-        token: response.data.authorisation.token,
-        isAuthenticated: true,
-      };
-      setAuth(authData);
-      console.log(response);
+      setAuth.login(response.data);
       navigate('/');
     } catch (e) {
       console.log(e);

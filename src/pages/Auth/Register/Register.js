@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../../../components/Auth/RegisterForm/RegisterForm';
 import './Register.css';
+import Swal from 'sweetalert2';
 import useAuth from '../../../hooks/useAuth';
 export default function Register(props) {
   const [loading, setLoading] = useState(false);
@@ -42,20 +43,70 @@ export default function Register(props) {
       email: form.email.value,
       password: form.password.value,
     };
-    const response = await axios.post(
-      'http://localhost:8000/api/register',
-      data,
-    );
-    const authData = {
-      id: response.data.user.id,
-      email: response.data.user.email,
-      token: response.data.authorisation.token,
-      isAuthenticated: true,
-      isAdmin: false,
-    };
-    setAuth(authData);
-
-    navigate('/');
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/api/register',
+        data,
+      );
+      const authData = {
+        id: response.data.user.id,
+        email: response.data.user.email,
+        token: response.data.authorisation.token,
+        isAuthenticated: true,
+        isAdmin: false,
+      };
+      setAuth(authData);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Konto zostało utworzone',
+        confirmButtonText: 'OK',
+        onClose: () => {
+          navigate('/login');
+        },
+      });
+    } catch (error) {
+      if (error.response.status === 422) {
+        const message = error.response.data.errors;
+        if (message.name) {
+          setForm({
+            ...form,
+            name: {
+              ...form.name,
+              error: 'Nazwa użytkownika jest już zajęta.',
+              showError: true,
+            },
+          });
+        } else if (message.email) {
+          setForm({
+            ...form,
+            email: {
+              ...form.email,
+              error: 'Adres email jest już zajęty.',
+              showError: true,
+            },
+          });
+        } else if (message.password) {
+          setForm({
+            ...form,
+            password: {
+              ...form.password,
+              error: 'Hasło musi mieć co najmniej 6 znaków.',
+              showError: true,
+            },
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Błąd',
+          text: 'Wystąpił błąd podczas przetwarzania Twojego żądania. Spróbuj ponownie później.',
+          confirmButtonText: 'OK',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const changeHandler = (value, fieldName) => {

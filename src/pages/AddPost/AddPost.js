@@ -5,20 +5,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { Navigate } from 'react-router-dom';
 import Editor from '../../components/Editor/Editor';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 export default function AddPost() {
   let { id_dep, id_sub, id_cat } = useParams();
   const [nameTopic, setNameTopic] = useState('');
   const [validationError, setValidationError] = useState({});
   const [editorData, setEditorData] = useState('');
+  const [auth] = useAuth();
+  const navigate = useNavigate();
   const newTopic = async (e) => {
     e.preventDefault();
-    // const id_user = localStorage.getItem(id);
     const formData = new FormData();
     formData.append('id_category', id_cat);
-    formData.append('id_user', 3);
+    formData.append('id_user', auth.id);
     formData.append('name', nameTopic);
     formData.append('content', editorData);
     console.log(formData);
@@ -29,7 +30,7 @@ export default function AddPost() {
           icon: 'success',
           text: data.message,
         });
-        Navigate('/departments');
+        navigate(`/forum/${id_dep}/${id_sub}/${id_cat}`);
       })
       .catch(({ response }) => {
         if (response.status === 422) {

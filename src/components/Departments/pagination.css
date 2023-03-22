@@ -1,0 +1,38 @@
+/* Paginacja */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+  
+  .pagination li {
+    list-style: none;
+    margin-right: 0.5rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Aktualnie wybrany element */
+  .pagination li.selected {
+    background-color:  #f8f9fa;
+    color: rgb(19, 18, 18);
+  }
+  
+  /* Strzałki "poprzedni" i "następny" */
+  .pagination li:first-child,
+  .pagination li:last-child {
+    border: none;
+    background-color: #f8f9fa;
+    color: rgb(19, 18, 18);
+  }
+  
+  /* Responsywność */
+  @media screen and (max-width: 480px) {
+    .pagination li {
+      padding: 0.2rem;
+      font-size: 0.8rem;
+    }
+  }

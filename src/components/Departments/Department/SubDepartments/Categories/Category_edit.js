@@ -7,27 +7,46 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-export default function Category_edit() {
+export default function EditCategories() {
   const navigate = useNavigate();
+
+  const { id } = useParams();
 
   const [name, setName] = useState('');
   const [validationError, setValidationError] = useState({});
 
-  const createCategory = async (e) => {
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    await axios
+      .get(`http://localhost:8000/api/category/${id}`)
+      .then(({ data }) => {
+        const { name } = data.category;
+        setName(name);
+      })
+      .catch((e) => {
+        Swal.fire({
+          text: e.message,
+          icon: 'error',
+        });
+      });
+  };
+  const updateCategory = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-
+    formData.append('_method', 'PATCH');
     formData.append('name', name);
-
     await axios
-      .post(`http://localhost:8000/api/categories`, formData)
+      .post(`http://localhost:8000/api/categories/${id}`, formData)
       .then(({ data }) => {
         Swal.fire({
           icon: 'success',
           text: data.message,
         });
-        navigate('/categories');
+        navigate('/admin');
       })
       .catch(({ response }) => {
         if (response.status === 422) {
@@ -47,7 +66,7 @@ export default function Category_edit() {
         <div className="col-12 col-sm-12 col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Stwórz nowy pod dział</h4>
+              <h4 className="card-title">Zmień nazwę kategorii</h4>
               <hr />
               <div className="form-wrapper">
                 {Object.keys(validationError).length > 0 && (
@@ -65,7 +84,7 @@ export default function Category_edit() {
                     </div>
                   </div>
                 )}
-                <Form onSubmit={createCategory}>
+                <Form onSubmit={updateCategory}>
                   <Row>
                     <Col>
                       <Form.Group controlId="Name">
@@ -88,7 +107,7 @@ export default function Category_edit() {
                     block="block"
                     type="submit"
                   >
-                    Dodaj
+                    Aktualizuj
                   </Button>
                 </Form>
               </div>

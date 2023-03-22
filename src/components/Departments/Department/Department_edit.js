@@ -7,11 +7,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-export default function EditUser() {
+export default function EditDepartment() {
   const navigate = useNavigate();
 
   const { id } = useParams();
-
   const [name, setName] = useState('');
   const [validationError, setValidationError] = useState({});
 
@@ -39,6 +38,7 @@ export default function EditUser() {
     const formData = new FormData();
     formData.append('_method', 'PATCH');
     formData.append('name', name);
+    console.log(formData);
     await axios
       .post(`http://localhost:8000/api/departments/${id}`, formData)
       .then(({ data }) => {
@@ -46,7 +46,7 @@ export default function EditUser() {
           icon: 'success',
           text: data.message,
         });
-        navigate('/departments');
+        navigate('/admin');
       })
       .catch(({ response }) => {
         if (response.status === 422) {
@@ -88,7 +88,7 @@ export default function EditUser() {
                   <Row>
                     <Col>
                       <Form.Group controlId="Name">
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label>Nazwa</Form.Label>
                         <Form.Control
                           type="text"
                           value={name}

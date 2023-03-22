@@ -2,89 +2,72 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import styles from '../../Main.module.css';
+import ReactPaginate from 'react-paginate';
 export default function Department() {
   const [category, setCategory] = useState([]);
-  const [topics, setTopics] = useState([]);
   const navigate = useNavigate();
+  const tokenData = JSON.parse(localStorage.getItem('token-data'));
+  const isAuthenticated = tokenData && tokenData.isAuthenticated;
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   let { id_dep, id_sub, id_cat } = useParams();
   useEffect(() => {
-    const fetchCategories = async () => {
-      await axios
-        .get(`http://localhost:8000/api/categories/${id_cat}`)
-        .then((res) => {
-          setCategory({
-            id_cat: res.data.category.id_category,
-            id_subd: res.data.category.id_subdepartment,
-            name: res.data.category.name,
-          });
-        });
-    };
-    fetchCategories();
-    const fetchTopics = async () => {
-      await axios.get(`http://localhost:8000/api/topics`).then((res) => {
-        const data = res.data.map((dep) => ({
-          id_category: dep.id_category,
-          id_topic: dep.id_topic,
-          name: dep.name,
-        }));
-        setTopics(data);
-      });
-    };
-    fetchTopics();
+    fetchCategory();
   }, []);
+  const fetchCategory = async (pageNumber) => {
+    await axios
+      .get(`http://localhost:8000/api/category/${id_cat}?page=${pageNumber}`)
+      .then(({ data }) => {
+        setCurrentPage(pageNumber);
+        setCategory(data.category);
+        setTotalPageCount(data.category.topics.last_page);
+        console.log(data);
+      });
+  };
+  const handlePageClick = (event) => {
+    console.log(event.selected + 1);
+    fetchCategory(event.selected + 1);
+  };
+  // console.log(category);
   return (
-    <div className={`row ${styles.main} mt-3`}>
-      <div className="card p-0">
-        <div className={`col-12 ps-4 p-2 ${styles.name}`}>
-          {category.name}
-          <Link
-            className="btn btn-info mb-2 float-end"
-            to={`/forum/${id_dep}/${id_sub}/${id_cat}/newtopic`}
-          >
-            Stwórz nowy temat
-          </Link>
-        </div>
-        <div className="card-body p-0">
-          <table className="table table-striped">
-            <thead className="card-header">
-              <tr>
-                <th
-                  className={`col-4 text-center ${styles.headers}`}
-                  style={{ border: 'none' }}
-                >
-                  Dostępne tematy
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {topics.length > 0 &&
-                    topics.map((topics) => {
-                      if (topics.id_category === category.id_cat) {
-                        return (
-                          <div className={styles.subdepartments}>
-                            <p
-                              onClick={() =>
-                                navigate(
-                                  `/forum/${id_dep}/${id_sub}/${topics.id_category}/${topics.id_topic}`,
-                                )
-                              }
-                            >
-                              {topics.name}
-                            </p>
-                          </div>
-                        );
-                      }
-                    })}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div className="homepage">
+      <div className={`${styles.department}`}>{category.name}</div>
+      {isAuthenticated && (
+        <button
+          className={`btn ${styles.newTopicBtn}`}
+          onClick={() =>
+            navigate(`/forum/${id_dep}/${id_sub}/${id_cat}/addPost`)
+          }
+        >
+          Nowy temat
+        </button>
+      )}
+      {category.topics ? (
+        <ul>
+          {category.topics.data.map((top) => (
+            <div
+              key={top.id_category}
+              className={`${styles.subdepartments}`}
+              onClick={() => navigate(`${top.id}`)}
+            >
+              {top.name}
+            </div>
+          ))}
+        </ul>
+      ) : null}
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="następna >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={totalPageCount}
+        previousLabel="< poprzednia"
+        renderOnZeroPageCount={null}
+        activeClassName="selected" // dodanie klasy dla aktywnego elementu
+        containerClassName="pagination" // dodanie klasy dla całej paginacji
+      />
     </div>
   );
 }

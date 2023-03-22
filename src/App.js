@@ -2,7 +2,6 @@ import './App.css';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './pages/Home/Home';
-import Admin from './pages/Admin/Admin';
 import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
 import Logout from './pages/Auth/Logout/Logout';
@@ -14,7 +13,6 @@ import Menu from './components/Layout/Menu/Menu';
 import Footer from './components/Layout/Footer/Footer';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AuthContext from './contexts/AuthContext';
-import Messages from './pages/Message/Messages';
 import AddPost from './pages/AddPost/AddPost';
 import { AuthenticatedRoute } from './hoc/AuthenticatedRoute';
 import EditTopic from './components/Topics/Topic/Edit/Edit';
@@ -33,6 +31,14 @@ import Categories from './pages/Departments/SubDepartment/Categories/Categories'
 import { AdminRoute } from './hoc/AdminRoute';
 import ViewTopic from './components/ViewTopic/ViewTopic';
 import NewTopic from './pages/NewTopic/NewTopic';
+import NewChat from './components/Chats/ChatsSidebar/NewChat';
+import AdminDashboard from './components/AdminDashboard/Layout';
+import Chats from './pages/Chats/Chats';
+import Me from './pages/Profiles/Me';
+import Profile from './pages/Profiles/Profile';
+import UsersList from './components/Users/Users_list';
+import UserEdit from './components/Users/User_edit';
+import User_permission_edit from './components/Users/User_permision_edit';
 function App() {
   const menu = <Menu />;
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -42,16 +48,16 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* <Route
+      <Route
         path="/admin"
         element={
           <AuthenticatedRoute>
             <AdminRoute>
-              <Admin />
+              <AdminDashboard />
             </AdminRoute>
           </AuthenticatedRoute>
         }
-      /> */}
+      />
       <Route
         path="/forum/:id_dep/:id_sub/:id_cat/:id_top"
         element={<ViewTopic />}
@@ -60,14 +66,6 @@ function App() {
       <Route path="/forum/:id_dep/:id_sub" element={<SubDepartment />} />
       <Route path="/forum/:id_dep/:id_sub/:id_cat" element={<Categories />} />
 
-      <Route
-        path="/message"
-        element={
-          <AuthenticatedRoute>
-            <Messages />
-          </AuthenticatedRoute>
-        }
-      />
       <Route
         path="/forum/:id_dep/:id_sub/:id_cat/addPost"
         element={
@@ -136,6 +134,15 @@ function App() {
           </AuthenticatedRoute>
         }
       />
+      <Route
+        exact
+        path="/message"
+        element={
+          <AuthenticatedRoute>
+            <Chats />
+          </AuthenticatedRoute>
+        }
+      />
       {/* Kategorie */}
       <Route
         path="/category/edit/:id"
@@ -154,7 +161,14 @@ function App() {
           </AuthenticatedRoute>
         }
       />
-
+      <Route
+        path="/newchat"
+        element={
+          <AuthenticatedRoute>
+            <NewChat />
+          </AuthenticatedRoute>
+        }
+      />
       {/* Posty */}
       <Route
         path="/topic/edit/:id"
@@ -170,6 +184,47 @@ function App() {
         element={
           <AuthenticatedRoute>
             <TopicList />
+          </AuthenticatedRoute>
+        }
+      />
+      <Route
+        exact
+        path="/users"
+        element={
+          <AuthenticatedRoute>
+            <UsersList />
+          </AuthenticatedRoute>
+        }
+      />
+      <Route
+        path="/user/edit/:id"
+        element={
+          <AuthenticatedRoute>
+            <UserEdit />
+          </AuthenticatedRoute>
+        }
+      />
+      <Route
+        path="/user/permission/:id"
+        element={
+          <AuthenticatedRoute>
+            <User_permission_edit />
+          </AuthenticatedRoute>
+        }
+      />
+      <Route
+        path="/me"
+        element={
+          <AuthenticatedRoute>
+            <Me />
+          </AuthenticatedRoute>
+        }
+      />
+      <Route
+        path="/profile/:id"
+        element={
+          <AuthenticatedRoute>
+            <Profile />
           </AuthenticatedRoute>
         }
       />

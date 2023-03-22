@@ -80,14 +80,14 @@ export default function List() {
                       <td>{row.name}</td>
                       <td>
                         <Link
-                          to={`/topic/edit/${row.id_subdepartment}`}
+                          to={`/subdepartment/edit/${row.id}`}
                           className="btn btn-success me-3"
                         >
                           Edytuj
                         </Link>
                         <Button
                           variant="danger"
-                          onClick={() => deleteTopic(row.id_subdepartment)}
+                          onClick={() => deleteTopic(row.id)}
                         >
                           Usuń
                         </Button>

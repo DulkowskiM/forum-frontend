@@ -17,19 +17,11 @@ export default function Home() {
     };
     fetchDepartments();
   }, []);
-
-  const categories = (categories) => {
-    return categories.map((category) => <li>{category.name}</li>);
-  };
-  const subdepartments = (subdepartments) => {
-    return categories.map((subdepartment) => <li>{subdepartment.name}</li>);
-  };
-
+  console.log(departments);
   return (
     <div className="homepage">
       <ul>
         {departments.map((department) => {
-          console.log(department);
           return (
             <li>
               <div
@@ -42,12 +34,26 @@ export default function Home() {
                 {department.subdepartments.map((subdepartment) => {
                   return (
                     <li>
-                      <div className={`${styles.subdepartments}`}>
+                      <div
+                        className={`${styles.subdepartments}`}
+                        onClick={() =>
+                          navigate(
+                            `forum/${department.id_department}/${subdepartment.id_subdepartment}`,
+                          )
+                        }
+                      >
                         {subdepartment.name}
                       </div>
                       <ol>
                         {subdepartment.categories.map((category) => (
-                          <div className={`${styles.categories}`}>
+                          <div
+                            className={`${styles.categories}`}
+                            onClick={() =>
+                              navigate(
+                                `forum/${department.id_department}/${category.id_subdepartment}/${category.id}`,
+                              )
+                            }
+                          >
                             {category.name}
                           </div>
                         ))}

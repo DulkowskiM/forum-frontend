@@ -29,24 +29,27 @@ export default function App() {
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset">
+                <a
+                  href="#!"
+                  className="text-reset"
+                  onClick={() => (window.location.href = '/register')}
+                >
                   Rejestracja
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset">
+                <a
+                  href="#!"
+                  className="text-reset"
+                  onClick={() => (window.location.href = '/login')}
+                >
                   Logowanie
-                </a>
-              </p>
-              <p>
-                <a href="#!" className="text-reset">
-                  Pomoc
                 </a>
               </p>
             </MDBCol>
 
             <MDBCol md="4" lg="3" xl="3" className="mx-auto mb-md-0 mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
+              <h6 className="text-uppercase fw-bold mb-4">Kontakt</h6>
               <p>Mateusz Dulkowski</p>
               <p>przykladowy@gmail.com</p>
             </MDBCol>

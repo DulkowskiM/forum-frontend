@@ -14,16 +14,17 @@ export default function NewTopic() {
   const [nameTopic, setNameTopic] = useState('');
   const [validationError, setValidationError] = useState({});
   const [editorData, setEditorData] = useState('');
-
+  const tokenData = localStorage.getItem('token-data');
+  const current_user = tokenData.id;
   const createTopic = async (e) => {
     e.preventDefault();
     //dane do wysłania
     const formData = new FormData();
     formData.append('id_category', id_cat);
-    formData.append('id_user', 3);
+    formData.append('id_user', current_user);
     formData.append('name', nameTopic);
     formData.append('content', editorData);
-    console.log(formData);
+    // console.log(formData);
     await axios
       .post(`http://localhost:8000/api/topics`, formData)
       .then(({ data }) => {

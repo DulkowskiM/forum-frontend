@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import LoginForm from '../../../components/Auth/LoginForm/LoginForm';
 import './Login.css';
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 export default function Login(props) {
@@ -36,7 +37,6 @@ export default function Login(props) {
       email: form.email.value,
       password: form.password.value,
     };
-
     try {
       const response = await axios.post(
         'http://localhost:8000/api/login',
@@ -46,6 +46,11 @@ export default function Login(props) {
       navigate('/');
     } catch (e) {
       console.log(e);
+      Swal.fire({
+        icon: 'error',
+        title: 'Wystąpił błąd',
+        text: 'Twoje dane są niepoprawne',
+      });
     }
   };
 

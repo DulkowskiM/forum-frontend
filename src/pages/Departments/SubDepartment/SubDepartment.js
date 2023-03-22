@@ -3,84 +3,40 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Main.module.css';
-export default function SubDepartment() {
-  const [categories, setCategories] = useState([]);
-  const [subdepartment, setSubDepartment] = useState([]);
+
+export default function Department() {
+  const [subdepartments, setSubDepartments] = useState([]);
   const navigate = useNavigate();
-  let { id_dep, id_sub } = useParams();
+  let { id_sub } = useParams();
   useEffect(() => {
-    const fetchSubDepartment = async () => {
+    const fetchSubDepartments = async () => {
       await axios
-        .get(`http://localhost:8000/api/subdepartments/${id_sub}`)
+        .get(`http://localhost:8000/api/subdepartment/${id_sub}`)
         .then((res) => {
-          setSubDepartment({
-            id_deps: res.data.subdepartment.id_department,
-            id_subd: res.data.subdepartment.id_subdepartment,
-            name: res.data.subdepartment.name,
-          });
+          if (res.data) {
+            setSubDepartments(res.data.subdepartment);
+          }
         });
     };
-    fetchSubDepartment();
-    const fetchCategories = async () => {
-      await axios.get(`http://localhost:8000/api/categories`).then((res) => {
-        const data = res.data.map((dep) => ({
-          id_category: dep.id_category,
-          id_subdep: dep.id_subdepartment,
-          name: dep.name,
-        }));
-        setCategories(data);
-      });
-    };
-    fetchCategories();
+    fetchSubDepartments();
   }, []);
-  // console.log(categories);
-  // console.log(subdepartment);
-  console.log(id_sub);
+
   return (
-    <div className={`row ${styles.main} mt-3`}>
-      <div className="card p-0">
-        <div className={`col-12 ps-4 p-2 ${styles.name}`}>
-          {subdepartment.name}
-        </div>
-        <div className="card-body p-0">
-          <table className="table table-striped">
-            <thead className="card-header">
-              <tr>
-                <th
-                  className={`col-4 text-center ${styles.headers}`}
-                  style={{ border: 'none' }}
-                >
-                  Dostępne kategorie
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {categories.length > 0 &&
-                    categories.map((categories) => {
-                      if (categories.id_subdep === subdepartment.id_subd) {
-                        return (
-                          <div className={styles.subdepartments}>
-                            <p
-                              onClick={() =>
-                                navigate(
-                                  `/forum/${subdepartment.id_deps}/${categories.id_subdep}/${categories.id_category}`,
-                                )
-                              }
-                            >
-                              {categories.name}
-                            </p>
-                          </div>
-                        );
-                      }
-                    })}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div className="homepage">
+      <div className={`${styles.department}`}>{subdepartments.name}</div>
+      {subdepartments.categories ? (
+        <ul>
+          {subdepartments.categories.map((cat) => (
+            <div
+              key={cat.id_subdepartment}
+              className={`${styles.subdepartments}`}
+              onClick={() => navigate(`${cat.id}`)}
+            >
+              {cat.name}
+            </div>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }

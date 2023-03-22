@@ -1,27 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-export default function CreateProduct() {
+export default function EditUser() {
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
+  const [isAdmin, setisAdmin] = useState('');
+  const { id } = useParams();
   const [validationError, setValidationError] = useState({});
 
-  const createDepartment = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
-    const formData = new FormData();
-
-    formData.append('name', name);
-
+  const fetchUser = async () => {
     await axios
-      .post(`http://localhost:8000/api/departments`, formData)
+      .get(`http://localhost:8000/api/users/${id}`)
+      .then(({ data }) => {
+        const { isAdmin } = data.user;
+        setisAdmin(isAdmin);
+        console.log(data);
+      })
+      .catch((e) => {
+        Swal.fire({
+          text: e.message,
+          icon: 'error',
+        });
+      });
+  };
+  console.log(isAdmin);
+  const updateUserPermision = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('is_admin', parseInt(isAdmin));
+    await axios
+      .post(`http://localhost:8000/api/users/${id}/change_permission`, formData)
       .then(({ data }) => {
         Swal.fire({
           icon: 'success',
@@ -47,7 +66,7 @@ export default function CreateProduct() {
         <div className="col-12 col-sm-12 col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Stwórz nowy dział</h4>
+              <h4 className="card-title">Zmień uprawnienia użytkownika</h4>
               <hr />
               <div className="form-wrapper">
                 {Object.keys(validationError).length > 0 && (
@@ -57,7 +76,7 @@ export default function CreateProduct() {
                         <ul className="mb-0">
                           {Object.entries(validationError).map(
                             ([key, value]) => (
-                              <li key={key}>{value}</li>
+                              <li key={key}>Nie można ustawić rangi brak</li>
                             ),
                           )}
                         </ul>
@@ -65,21 +84,24 @@ export default function CreateProduct() {
                     </div>
                   </div>
                 )}
-                <Form onSubmit={createDepartment}>
+                <Form onSubmit={updateUserPermision}>
                   <Row>
                     <Col>
                       <Form.Group controlId="Name">
-                        <Form.Label>Nazwa</Form.Label>
+                        <Form.Label>Permisje</Form.Label>
                         <Form.Control
-                          type="text"
-                          value={name}
-                          onChange={(event) => {
-                            setName(event.target.value);
-                          }}
-                        />
+                          as="select"
+                          value={isAdmin}
+                          onChange={(e) => setisAdmin(e.target.value)}
+                        >
+                          <option>Brak</option>
+                          <option value="0">Użytkownik</option>
+                          <option value="1">Administrator</option>
+                        </Form.Control>
                       </Form.Group>
                     </Col>
                   </Row>
+
                   <Button
                     variant="primary"
                     className="mt-2"
@@ -87,7 +109,7 @@ export default function CreateProduct() {
                     block="block"
                     type="submit"
                   >
-                    Dodaj
+                    Aktualizuj
                   </Button>
                 </Form>
               </div>

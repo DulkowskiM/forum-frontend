@@ -4,30 +4,32 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import ReactPaginate from 'react-paginate';
-import pagination from '../../../pagination.css';
-export default function Category_list() {
-  const [category, setCategory] = useState([]);
+import pagination from '../Departments/pagination.css';
+
+export default function UserList() {
+  const [users, setUsers] = useState([]);
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
-    fetchTopics(currentPage);
+    fetchUsers(currentPage);
   }, []);
 
-  const fetchTopics = async (pageNumber) => {
+  const fetchUsers = async (pageNumber) => {
     await axios
-      .get(`http://localhost:8000/api/categories?page=${pageNumber}`)
+      .get(`http://localhost:8000/api/users?page=${pageNumber}`)
       .then(({ data }) => {
         setCurrentPage(pageNumber);
-        setCategory(data.data);
+        setUsers(data.data);
         console.log(data);
         setTotalPageCount(data.last_page);
       });
   };
 
-  const deleteTopic = async (id_category) => {
+  const deleteUser = async (id_user) => {
     const isConfirm = await Swal.fire({
-      title: 'Jetseś pewien?',
-      text: 'Usunięcie kategorii powoduje również usunięcie tematów oraz odpowiedzi do tematów',
+      title: 'Jesteś pewien?',
+      text: 'Usunięcie użytkownika spowoduje również usunięcie jego postów oraz odpowiedzi do postów',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -42,13 +44,13 @@ export default function Category_list() {
     }
 
     await axios
-      .delete(`http://localhost:8000/api/categories/${id_category}`)
+      .delete(`http://localhost:8000/api/users/${id_user}`)
       .then(({ data }) => {
         Swal.fire({
           icon: 'success',
           text: data.message,
         });
-        fetchTopics(currentPage);
+        fetchUsers(currentPage);
       })
       .catch(({ response: { data } }) => {
         Swal.fire({
@@ -60,8 +62,9 @@ export default function Category_list() {
 
   const handlePageClick = (event) => {
     console.log(event.selected + 1);
-    fetchTopics(event.selected + 1);
+    fetchUsers(event.selected + 1);
   };
+
   return (
     <div className="container">
       <div className="row">
@@ -71,25 +74,35 @@ export default function Category_list() {
             <table className="table table-bordered mb-0 text-center">
               <thead>
                 <tr>
+                  <th>Id</th>
                   <th>Nazwa</th>
+                  <th>Data utworzenia</th>
                   <th>Operacje</th>
                 </tr>
               </thead>
               <tbody>
-                {category.length > 0 &&
-                  category.map((row, key) => (
+                {users.length > 0 &&
+                  users.map((row, key) => (
                     <tr key={key}>
+                      <td>{row.id}</td>
                       <td>{row.name}</td>
+                      <td>{row.created_at}</td>
                       <td>
                         <Link
-                          to={`/category/edit/${row.id}`}
+                          to={`/user/edit/${row.id}`}
                           className="btn btn-success me-3"
                         >
-                          Edytuj
+                          Edytuj nazwę
+                        </Link>
+                        <Link
+                          to={`/user/permission/${row.id}`}
+                          className="btn btn-primary me-3"
+                        >
+                          Edytuj uprawnienia
                         </Link>
                         <Button
                           variant="danger"
-                          onClick={() => deleteTopic(row.id)}
+                          onClick={() => deleteUser(row.id)}
                         >
                           Usuń
                         </Button>
@@ -103,11 +116,11 @@ export default function Category_list() {
       </div>
       <ReactPaginate
         breakLabel="..."
-        nextLabel="następny >"
+        nextLabel="next >"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={totalPageCount}
-        previousLabel="< poprzedni"
+        previousLabel="< previous"
         renderOnZeroPageCount={null}
         activeClassName="selected" // dodanie klasy dla aktywnego elementu
         containerClassName="pagination" // dodanie klasy dla całej paginacji

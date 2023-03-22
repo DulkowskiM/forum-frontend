@@ -3,83 +3,43 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './Main.module.css';
+
 export default function Department() {
-  const [department, setDepartment] = useState([]);
-  const [subdepartments, setSubDepartments] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const navigate = useNavigate();
   let { id_dep } = useParams();
   useEffect(() => {
     const fetchDepartments = async () => {
       await axios
-        .get(`http://localhost:8000/api/departments/${id_dep}`)
+        .get(`http://localhost:8000/api/department/${id_dep}`)
         .then((res) => {
-          setDepartment({
-            id: res.data.department.id_department,
-            name: res.data.department.name,
-          });
+          // console.log(res.data.department);
+          if (res.data) {
+            setDepartments(res.data.department);
+          }
         });
     };
     fetchDepartments();
-    const fetchSubDepartments = async () => {
-      await axios
-        .get(`http://localhost:8000/api/subdepartments`)
-        .then((res) => {
-          const data = res.data.map((dep) => ({
-            id_dep: dep.id_department,
-            id_subdepartment: dep.id_subdepartment,
-            name: dep.name,
-          }));
-          setSubDepartments(data);
-        });
-    };
-    fetchSubDepartments();
   }, []);
-  console.log(subdepartments);
+  console.log(departments);
   return (
-    <div className={`row ${styles.main} mt-3`}>
-      <div className="card p-0">
-        <div className={`col-12 ps-4 p-2 ${styles.name}`}>
-          <h1>{department.name}</h1>
-        </div>
-        <div className="card-body p-0">
-          <table className="table table-striped">
-            <thead className="card-header">
-              <tr>
-                <th
-                  className={`col-4  ${styles.headers}`}
-                  style={{ border: 'none' }}
-                >
-                  Dostępne poddziały
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {subdepartments.length > 0 &&
-                subdepartments.map((subdepartments) => {
-                  if (subdepartments.id_dep === department.id) {
-                    return (
-                      <tr>
-                        <td>
-                          <div className={styles.subdepartments}>
-                            <p
-                              onClick={() =>
-                                navigate(
-                                  `/forum/${department.id}/${subdepartments.id_subdepartment}`,
-                                )
-                              }
-                            >
-                              {subdepartments.name}
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div className="homepage">
+      <div className={`${styles.department}`}>{departments.name}</div>
+      <ul>
+        {departments.subdepartments ? (
+          <ul>
+            {departments.subdepartments.map((sub) => (
+              <div
+                key={sub.id_department}
+                className={`${styles.subdepartments}`}
+                onClick={() => navigate(`${sub.id}`)}
+              >
+                {sub.name}
+              </div>
+            ))}
+          </ul>
+        ) : null}
+      </ul>
     </div>
   );
 }

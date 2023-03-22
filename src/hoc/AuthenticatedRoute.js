@@ -3,8 +3,9 @@ import useAuth from '../hooks/useAuth';
 import { useContext } from 'react';
 import ReducerContext from '../contexts/ReducerContext';
 export const AuthenticatedRoute = ({ children }) => {
-  const { state } = useContext(ReducerContext);
-  if (!state.user) {
+  const [state] = useAuth();
+
+  if (!state.isAuthenticated) {
     // user is not authenticated
     return <Navigate to="/login" />;
   }

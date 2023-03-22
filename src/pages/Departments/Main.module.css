@@ -5,12 +5,11 @@
   justify-content: space-around;
 }
 
-.name {
+.department {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   color: #ffffff;
-  cursor: pointer;
   background-color: #1e90ff;
   transition: background-color 0.2s ease-in-out;
 }
@@ -48,4 +47,23 @@
 .subdepartments:hover {
   --_p: 100%;
   --_s: .3s;
+}
+.newTopicBtn {
+  position: fixed;
+  top: 5%;
+  background-color: #d5e039;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.newTopicBtn:hover {
+  background-color: #161616;
 }

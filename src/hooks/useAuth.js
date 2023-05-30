@@ -15,6 +15,7 @@ export default function useAuth() {
         name: data.user.name,
       };
       // console.log(authData);
+      console.log(data.user.is_admin);
       authContext.dispatch(login(authData));
       window.localStorage.setItem('token-data', JSON.stringify(authData));
       // console.log(window.localStorage.getItem('token-data'));

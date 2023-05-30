@@ -12,7 +12,7 @@ const NewChat = () => {
     event.preventDefault();
     try {
       const response = await axios.get('http://localhost:8000/api/users');
-      const user = response.data.find((user) => user.name === userName);
+      const user = response.data.data.find((user) => user.name === userName);
       if (!user) {
         throw new Error('Użytkownik o podanym nicku nie istnieje');
       }
